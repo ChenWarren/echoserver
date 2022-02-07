@@ -13,11 +13,10 @@ conn()
 // request log
 app.use(logger)
 
-const root = require('./routers/root')
-
 app.use(express.json())
 
-app.use(root)
+// routes
+app.use('/', require('./routers/root'))
 
 
 mongoose.connection.once('open', () => {
