@@ -5,19 +5,19 @@ import { Request, Response } from "express"
 const fs = require('fs')
 const fsPromises = require('fs/promises')
 const path = require('path')
-const logFile: string = 'reqLog.txt'
+const logFile = 'reqLog.txt'
 
 
-const logEvents = async (m:string, u:string) => {
+const logEvents = async (m:string, file:string) => {
     const dateTime = format(new Date(), 'yyyy-MM-dd HH:mm:ss;')
-    const logItem =` ${dateTime}\tMethod: ${m};\tURL: ${u};\n`
+    const logItem =` ${dateTime}\t${m}`
 
     try {
         if(!fs.existsSync(path.join(__dirname, '..', 'logs'))) {
             await fsPromises.mkdir(path.join(__dirname, '..', 'logs'))
         }
 
-        await fsPromises.appendFile(path.join(__dirname, '..', 'logs', logFile), logItem)
+        await fsPromises.appendFile(path.join(__dirname, '..', 'logs', file), logItem)
 
     } catch (err) {
         console.log(err)
@@ -26,7 +26,8 @@ const logEvents = async (m:string, u:string) => {
 }
 
 const logger = (req: Request, res: Response, next: Function) => {
-    logEvents(req.method, req.url)
+    const msg = `Method: ${req.method};\tOrigin: ${req.headers.origin};\tTarget: ${req.url};\n`
+    logEvents(msg, logFile)
     next()
 }
 

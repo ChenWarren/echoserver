@@ -1,0 +1,2 @@
+ 2022-02-07 21:07:44;	Error: Not allowed by CORS
+ 2022-02-07 21:07:51;	Error: Not allowed by CORS
