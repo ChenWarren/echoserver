@@ -23,6 +23,7 @@ app.use(express.json())
 
 // routes
 app.use('/', require('./routers/root'))
+app.use('/register', require('./routers/userRegister'))
 
 
 app.all('*', (req: Request, res:Response) => {
@@ -31,6 +32,11 @@ app.all('*', (req: Request, res:Response) => {
 
 // error handler
 app.use(errorHandler)
+
+
+// app.listen(PORT, ()=> {
+//     console.log(`Server running on port: ${PORT}`);  
+// })
 
 mongoose.connection.once('open', () => {
     console.log('Connected to db')

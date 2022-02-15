@@ -1,2 +1,5 @@
  2022-02-07 21:07:44;	Error: Not allowed by CORS
  2022-02-07 21:07:51;	Error: Not allowed by CORS
+ 2022-02-14 21:46:50;	SyntaxError: Unexpected string in JSON at position 78
+ 2022-02-14 21:48:18;	SyntaxError: Unexpected token { in JSON at position 63
+ 2022-02-14 21:48:38;	SyntaxError: Unexpected token { in JSON at position 63
