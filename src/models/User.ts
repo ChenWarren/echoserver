@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+import { Schema, model } from 'mongoose'
 
 const userSchema = new Schema({
     account: {
@@ -24,16 +24,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    // friends: {
-    //     f_count: {
-    //         type: Number
-    //     },
-    //     friends: [{
-    //         friend: {
-    //             type: String
-    //         }
-    //     }]
-    // },
+
     // clubs: {
     //     c_count: {
     //         type: Number
