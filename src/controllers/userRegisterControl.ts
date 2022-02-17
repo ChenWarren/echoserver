@@ -3,8 +3,8 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 
 const registerNewUser = async (req: Request, res: Response) => {
-    const { account, username, pwd, location } = req.body
-    if(!account || !username || !pwd || !location.country || !location.state) return res.status(400).json({'message':'Account, username, password, country, and state are required.'})
+    const { account, username, pwd, country, state } = req.body
+    if(!account || !username || !pwd || country || state) return res.status(400).json({'message':'Account, username, password, country, and state are required.'})
 
     const accountCheck = await User.findOne({ account: account }).exec()
     const usernameCheck = await User.findOne({ username: username }).exec()
@@ -17,7 +17,8 @@ const registerNewUser = async (req: Request, res: Response) => {
             "account": account,
             "username": username,
             "password": hashedPwd,
-            "location": { "country": location.country, "state": location.state}
+            "country": country, 
+            "state": state,
         })
 
         res.status(201).json({'message': `New user ${username} created!`})
