@@ -1,6 +1,9 @@
 import { Schema, model } from 'mongoose'
 
 const userSchema = new Schema({
+    _id:{
+        type: Schema.Types.ObjectId
+    },
     account: {
         type: String,
         required: true
@@ -24,54 +27,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-
-    // clubs: {
-    //     c_count: {
-    //         type: Number
-    //     },
-    //     clubs:[{
-    //         club: {
-    //             type: String
-    //         },
-    //     }] 
-    // },
-    // favobooks: [{
-    //     favobook: {
-    //         type: String
-    //     },
-    //     ISBN: {
-    //         type: Number
-    //     }
-    // }],
-    // readlist:{
-    //     b_count: {
-    //         type: Number
-    //     },
-    //     readbooks:[{
-    //         readbook: {
-    //             type: String
-    //         },
-    //         ISBN: {
-    //             type: Number
-    //         }
-    //     }]
-    // },
-    // reviews: {
-    //     r_count: {
-    //         type: Number
-    //     },
-    //     reviews: [{
-    //         ISBN: {
-    //             type: Number
-    //         },
-    //         review: {
-    //             type: String
-    //         },
-    //         rate: {
-    //             type: String
-    //         }
-    //     }],
-    // },
     refreshToken: String
 })
 

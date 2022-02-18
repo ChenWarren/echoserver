@@ -1,17 +1,19 @@
 import { Schema, model } from "mongoose"
-import { ObjectId } from "mongodb"
-const { User } = require('./User')
 
 const friendSchema = new Schema({
-    f_count: {
-        type: Number
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     },
     friends: [{
         friend: {
-            type: ObjectId,
-            ref: User,
+            type: Schema.Types.ObjectId,
+            ref: 'User',
         }
-    }]
+    }],
+    f_count: {
+        type: Number
+    }
 })
 
 module.exports = model('Friend', friendSchema)
