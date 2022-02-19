@@ -24,6 +24,7 @@ app.use(express.json())
 // routes
 app.use('/', require('./routers/root'))
 app.use('/register', require('./routers/userRegister'))
+app.use('/favobook', require('./routers/favobookHandle'))
 
 
 app.all('*', (req: Request, res:Response) => {
