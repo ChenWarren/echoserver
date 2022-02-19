@@ -2,7 +2,7 @@ import { Router } from "express"
 const router = Router()
 const favobookHandler = require('../controllers/favobookHandler')
 
-router.post('/', favobookHandler.addFavobook)
+router.post('/add', favobookHandler.addFavobook)
 
 
 module.exports = router
