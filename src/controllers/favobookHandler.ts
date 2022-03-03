@@ -16,11 +16,32 @@ const addFavobook = async ( req: Request, res: Response) => {
         if(favobookCheck){
             return res.status(409).json({"message": "This book is already in your favourite list!"})
         }
+        try{
+            const favoBookList = await favobookOwnerCheck.favobooks.push(favobook)
+            const result = await FavBook.pudateOne({
+                 owner: owner, 
+                 favobooks: favoBookList
+            })
+    
+        } catch (err: any){
+            res.status(500).json({"message": err.message})
+        }
     }
+
     try{
+        const result = await FavBook.create({
+            "owner": owner,
+            "favobooks": [
+                {
+                    "favobook": favobook
+                }
+            ]
+        })
 
-    } catch (err: any){
+        res.status(201).json({"message": `New favourite book ${favobook} added!`})
 
+    } catch(err: any) {
+        res.status(500).json({"message": err.message})
     }
 }
 
