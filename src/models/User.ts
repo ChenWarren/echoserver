@@ -1,9 +1,6 @@
 import { Schema, model } from 'mongoose'
 
 const userSchema = new Schema({
-    _id:{
-        type: Schema.Types.ObjectId
-    },
     account: {
         type: String,
         required: true

@@ -10,6 +10,7 @@ const corsOptions = require('./config/corsOptions')
 const conn = require('./config/dbConn')
 const {logger} = require('./middleware/logEvents')
 const errorHandler = require('./middleware/errorHandler')
+const verifyJWT = require('./middleware/verifyJWT')
 
 // conn to db
 conn()
@@ -25,6 +26,7 @@ app.use(express.json())
 app.use('/', require('./routers/root'))
 app.use('/register', require('./routers/userRegister'))
 app.use('/auth', require('./routers/auth'))
+app.use(verifyJWT)
 app.use('/update', require('./routers/userUpdate'))
 app.use('/favobook', require('./routers/favobookHandle'))
 
