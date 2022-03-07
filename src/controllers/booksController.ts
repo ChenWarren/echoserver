@@ -1,6 +1,7 @@
 const Book = require('../models/Book')
 import { Request, Response } from "express"
 
+
 const getAllBooks = async (req: Request, res: Response) => {
     let page: number = 1
     if(!req?.params?.p){
@@ -14,9 +15,10 @@ const getAllBooks = async (req: Request, res: Response) => {
 }
 
 const getBook = async (req: Request, res: Response) => {
+    let bookID: string = ''
     if(!req?.params?.id) return res.status(400).json({"message": "Book ID required"})
-
-    const book = await Book.findOne({_id: req.params.id}).exec()
+    bookID = req.params.id
+    const book = await Book.findById(bookID).exec()
     if(!book) {
         return res.status(204).json({"message": `Book ID ${req.params.id} not found`})
     }
