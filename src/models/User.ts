@@ -16,6 +16,9 @@ const userSchema = new Schema({
     gender: {
         type: String,
     },
+    age: {
+        type: Number,
+    },
     country: {
         type: String,
         required: true
@@ -23,6 +26,9 @@ const userSchema = new Schema({
     state: {
         type: String,
         required: true
+    },
+    user_id: {
+        type: Number,
     },
     refreshToken: String
 })

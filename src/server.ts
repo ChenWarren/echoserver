@@ -1,5 +1,5 @@
 require('dotenv').config()
-import express from 'express'
+const express = require('express')
 import { Request, Response } from 'express'
 const app = express()
 const PORT = process.env.PORT || 3500
@@ -26,8 +26,9 @@ app.use(express.json())
 app.use('/', require('./routers/root'))
 app.use('/register', require('./routers/userRegister'))
 app.use('/auth', require('./routers/auth'))
-app.use(verifyJWT)
+// app.use(verifyJWT)
 app.use('/update', require('./routers/userUpdate'))
+app.use('/books', require('./routers/books'))
 app.use('/favobook', require('./routers/favobookHandle'))
 
 

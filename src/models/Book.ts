@@ -1,10 +1,28 @@
 import { Schema, model } from 'mongoose'
 
 const bookSchema = new Schema({
-    _id:{
-        type: Schema.Types.ObjectId
+    isbn: {
+        type: String
     },
-    ISBN: {
+    title: {
+        type: String
+    },
+    authors: {
+        type: String
+    },
+    pub_year: {
+        type: Number
+    },
+    publisher: {
+        type: String
+    },
+    image_s: {
+        type: String
+    },
+    image_m: {
+        type: String
+    },
+    image_l: {
         type: String
     }
 })
