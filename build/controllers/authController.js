@@ -13,18 +13,18 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const loginHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { account, pwd } = req.body;
-    if (!account || !pwd)
+    const { email, password } = req.body;
+    if (!email || !password)
         return res.status(400).json({ "message": "Account, password are required." });
     const foundAccount = yield User.findOne({
-        account: account
+        email: email
     }).exec();
     if (!foundAccount)
         return res.status(401);
-    const match = yield bcrypt.compare(pwd, foundAccount.password);
+    const match = yield bcrypt.compare(password, foundAccount.password);
     if (match) {
-        const accessTk = jwt.sign({ "user": foundAccount.account }, process.env.ACCESS_TOKEN_CODE, { expiresIn: '300s' });
-        const refreshTk = jwt.sign({ "user": foundAccount.account }, process.env.REFRESH_TOKEN_CODE, { expiresIn: '1d' });
+        const accessTk = jwt.sign({ "user": foundAccount.email }, process.env.ACCESS_TOKEN_CODE, { expiresIn: '300s' });
+        const refreshTk = jwt.sign({ "user": foundAccount.email }, process.env.REFRESH_TOKEN_CODE, { expiresIn: '1d' });
         foundAccount.refreshToken = refreshTk;
         const result = yield foundAccount.save();
         res.cookie('jwt', refreshTk, { httpOnly: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });

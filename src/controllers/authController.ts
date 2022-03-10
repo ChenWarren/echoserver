@@ -4,23 +4,23 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const loginHandler = async (req: Request, res: Response) => {
-    const { account, pwd } = req.body
-    if( !account || !pwd ) return res.status(400).json({"message":"Account, password are required."})
+    const { email, password } = req.body
+    if( !email || !password ) return res.status(400).json({"message":"Account, password are required."})
 
     const foundAccount = await User.findOne({
-        account: account 
+        email: email 
     }).exec()
     if(!foundAccount) return res.status(401)
 
-    const match = await bcrypt.compare(pwd, foundAccount.password)
+    const match = await bcrypt.compare(password, foundAccount.password)
     if(match){
         const accessTk = jwt.sign(
-            { "user": foundAccount.account },
+            { "user": foundAccount.email },
             process.env.ACCESS_TOKEN_CODE,
             { expiresIn: '300s'}
         )
         const refreshTk = jwt.sign(
-            { "user": foundAccount.account },
+            { "user": foundAccount.email },
             process.env.REFRESH_TOKEN_CODE,
             { expiresIn: '1d'}
         )

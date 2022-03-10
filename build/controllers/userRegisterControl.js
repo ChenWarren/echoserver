@@ -12,19 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, account, username, pwd, gender, age, country, state, user_id } = req.body;
-    if (!account || !username || !pwd || !country || !state)
+    const { id, email, username, password, gender, age, country, state, user_id } = req.body;
+    if (!email || !username || !password || !country || !state)
         return res.status(400).json({ 'message': 'Account, username, password, country, and state are required.' });
-    const accountCheck = yield User.findOne({ account: account }).exec();
+    const accountCheck = yield User.findOne({ email: email }).exec();
     const usernameCheck = yield User.findOne({ username: username }).exec();
     if (accountCheck)
         return res.status(409).json({ 'message': 'Account exist!' });
     if (usernameCheck)
         return res.status(409).json({ 'message': 'Username exist!' });
     try {
-        const hashedPwd = yield bcrypt.hash(pwd, 10);
+        const hashedPwd = yield bcrypt.hash(password, 10);
         const result = yield User.create({
-            "account": account,
+            "email": email,
             "username": username,
             "password": hashedPwd,
             "country": country,
