@@ -11,39 +11,54 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const FavBook = require('../models/FavBook');
 const addFavobook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { owner, favobook } = req.body;
-    if (!owner || !favobook)
+    const { userID, bookID } = req.body;
+    if (!userID || !bookID)
         return res.status(400).json({ 'message': 'User and book ID are required.' });
-    const favobookOwnerCheck = yield FavBook.findOne({ owner: owner }).exec();
+    const favobookOwnerCheck = yield FavBook.findOne({ userID: userID }).exec();
     if (favobookOwnerCheck) {
-        const favobookCheck = favobookOwnerCheck.favobooks.find((book) => (book.favobook == favobook));
+        const favobookCheck = yield favobookOwnerCheck.favobooks.find((b) => b.bookID == bookID);
         if (favobookCheck) {
             return res.status(409).json({ "message": "This book is already in your favourite list!" });
         }
         try {
-            const favoBookList = yield favobookOwnerCheck.favobooks.push(favobook);
-            const result = yield FavBook.pudateOne({
-                owner: owner,
-                favobooks: favoBookList
-            });
+            favobookOwnerCheck.favobooks.push({ bookID: bookID });
+            yield favobookOwnerCheck.save((err, books) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err)
+                    res.status(500).json({ "message": err.message });
+                const returnFavoBooks = yield FavBook.findOne({ userID: userID }).populate({ path: 'favobooks', populate: { path: 'bookID', select: 'title authors pub_year' } }).exec();
+                res.status(200).json({ "message": "Favourite book added.", "favobooks": returnFavoBooks });
+            }));
         }
         catch (err) {
             res.status(500).json({ "message": err.message });
         }
     }
+    else {
+        try {
+            const result = yield FavBook.create({
+                "userID": userID,
+                "favobooks": [{
+                        "bookID": bookID
+                    }]
+            });
+            const returnFavoBooks = yield FavBook.findOne({ userID: userID }).populate({ path: 'favobooks', populate: { path: 'bookID', select: 'title authors pub_year' } }).exec();
+            res.status(201).json({ "message": `New favourite book ${bookID} added!`, "favobooks": returnFavoBooks });
+        }
+        catch (err) {
+            res.status(500).json({ "message": err.message });
+        }
+    }
+});
+const getFavoBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userID } = req.body;
+    if (!userID)
+        return res.status(400).json({ 'message': 'User ID is required.' });
     try {
-        const result = yield FavBook.create({
-            "owner": owner,
-            "favobooks": [
-                {
-                    "favobook": favobook
-                }
-            ]
-        });
-        res.status(201).json({ "message": `New favourite book ${favobook} added!` });
+        const favobooks = yield FavBook.findOne({ userID: userID }).populate({ path: 'favobooks', populate: { path: 'bookID', select: 'title authors pub_year' } }).exec();
+        res.status(200).json({ "message": "Success", "favobooks": favobooks });
     }
     catch (err) {
         res.status(500).json({ "message": err.message });
     }
 });
-module.exports = { addFavobook, };
+module.exports = { addFavobook, getFavoBooks };

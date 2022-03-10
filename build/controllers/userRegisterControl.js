@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { account, username, pwd, gender, age, country, state, user_id } = req.body;
+    const { id, account, username, pwd, gender, age, country, state, user_id } = req.body;
     if (!account || !username || !pwd || !country || !state)
         return res.status(400).json({ 'message': 'Account, username, password, country, and state are required.' });
     const accountCheck = yield User.findOne({ account: account }).exec();
@@ -33,7 +33,7 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
             "gender": gender,
             "age": age
         });
-        console.log(result);
+        // console.log(result);
         res.status(201).json({ 'message': `New user ${username} created!` });
     }
     catch (err) {

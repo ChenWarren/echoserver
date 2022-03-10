@@ -9,7 +9,7 @@ const getAllBooks = async (req: Request, res: Response) => {
     } else {
         page = parseInt(req.params.p)
     }
-    const books = await Book.find().skip((page-1)*500).limit(500)
+    const books = await Book.find({},'title authors pub_year image_s').skip((page-1)*500).limit(500)
     if(!books) return res.status(204).json({"message": "No books found"})
     res.json(books)
 }
