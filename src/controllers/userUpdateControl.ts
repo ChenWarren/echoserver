@@ -3,11 +3,11 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 
 const userInfoUpdate = async (req: Request, res: Response) => {
-    const { id, email, username, password, gender, age, country, state, user_id } = req.body
+    const { userID, email, username, password, gender, age, country, state, user_id } = req.body
 
     try {
         const hashedPwd = await bcrypt.hash(password, 10)
-        const result = await User.findByIdAndUpdate(id, {
+        const result = await User.findByIdAndUpdate(userID, {
             "email": email,
             "username": username,
             "password": hashedPwd,
