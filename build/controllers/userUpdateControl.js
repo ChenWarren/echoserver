@@ -12,11 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const userInfoUpdate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userID, email, username, password, gender, age, country, state, user_id } = req.body;
+    const { email, username, password, gender, age, country, state, user_id } = req.body;
     try {
         const hashedPwd = yield bcrypt.hash(password, 10);
-        const result = yield User.findByIdAndUpdate(userID, {
-            "email": email,
+        const result = yield User.findOneAndUpdate({ email: email }, {
             "username": username,
             "password": hashedPwd,
             "country": country,
