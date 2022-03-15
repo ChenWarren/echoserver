@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const friendSchema = new mongoose_1.Schema({
-    owner: {
+    userID: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User',
     },

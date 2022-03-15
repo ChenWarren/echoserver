@@ -38,10 +38,12 @@ const addFavobook = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         try {
             const result = yield FavBook.create({
                 "userID": userID,
-                "favobooks": [{
-                        "bookID": bookID
-                    }]
+                "favobooks": []
             });
+            for (let i = 0; i < bookID.length; i++) {
+                yield result.favobooks.push({ bookID: bookID[i] });
+            }
+            yield result.save();
             const returnFavoBooks = yield FavBook.findOne({ userID: userID }).populate({ path: 'favobooks', populate: { path: 'bookID', select: 'title authors pub_year' } }).exec();
             res.status(201).json({ "message": `New favourite book ${bookID} added!`, "favobooks": returnFavoBooks });
         }
