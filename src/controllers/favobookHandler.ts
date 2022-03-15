@@ -1,14 +1,17 @@
 import { Request, Response } from "express"
 const FavBook = require('../models/FavBook')
+const User = require('../models/User')
 
 const addFavobook = async ( req: Request, res: Response) => {
-    const { userID, bookID } = req.body
-    if(!userID || !bookID.length ) return res.status(400).json({'message': 'User and book ID are required.'})
+    const { user, bookID } = req.body
+    if(!user || !bookID.length ) return res.status(400).json({'message': 'User and book ID are required.'})
+
+    const getUser = await User.findOne({ email: user}).exec()
+    const userID = getUser.id
 
     const favobookOwnerCheck = await FavBook.findOne({ userID: userID}).exec()
 
     if(favobookOwnerCheck){
-
 
         try{
 
@@ -26,7 +29,6 @@ const addFavobook = async ( req: Request, res: Response) => {
 
                 res.status(200).json({"message": "Favourite book added.", "favobooks":returnFavoBooks})
             })
-
             
         } catch (err: any){
             res.status(500).json({"message": err.message})
@@ -57,8 +59,11 @@ const addFavobook = async ( req: Request, res: Response) => {
 }
 
 const getFavoBooks = async ( req: Request, res: Response) => {
-    const { userID } = req.body
-    if(!userID) return res.status(400).json({'message': 'User ID is required.'})
+    const { user } = req.body
+    if(!user) return res.status(400).json({'message': 'User ID is required.'})
+
+    const getUser = await User.findOne({ email: user}).exec()
+    const userID = getUser.id
 
     const favobookOwnerCheck = await FavBook.findOne({ userID: userID}).exec()
     if(!favobookOwnerCheck) return res.status(404).json({"message": `${userID} don't has a favourite book list.`})
@@ -75,12 +80,14 @@ const getFavoBooks = async ( req: Request, res: Response) => {
 }
 
 const deleteFavoBook = async ( req: Request, res: Response) => {
-    const { userID, bookID } = req.body
+    const { user, bookID } = req.body
 
-    if(!userID || !bookID.length ) return res.status(400).json({'message': 'User and book ID are required.'})
+    if(!user || !bookID.length ) return res.status(400).json({'message': 'User and book ID are required.'})
+
+    const getUser = await User.findOne({ email: user}).exec()
+    const userID = getUser.id
 
     const favobookOwnerCheck = await FavBook.findOne({ userID: userID}).exec()
-    
 
     if(favobookOwnerCheck){
 

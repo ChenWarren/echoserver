@@ -1,7 +1,8 @@
 import { Router } from "express"
 const router = Router()
-const { createClub } = require('../controllers/clubController')
+const { createClub, addMembers } = require('../controllers/clubController')
 
 router.post('/create', createClub)
+router.post('/addmember', addMembers)
 
 module.exports = router
