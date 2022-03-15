@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose"
 
 const friendSchema = new Schema({
-    owner: {
+    userID: {
         type: Schema.Types.ObjectId,
         ref: 'User',
     },

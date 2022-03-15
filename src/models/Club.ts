@@ -1,19 +1,44 @@
 import { Schema, model } from "mongoose"
 
-const clubSchema = new Schema({
-    owner: {
+const clubBookListSchema = new Schema({
+    bookID: {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+    },
+    like_count: {
+        type: Number,
+        default: 0,
+    },
+})
+
+const clubMember = new Schema({
+    memberID: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    }
+})
+
+const clubSchema = new Schema({
+    host: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
-    club: {
+    title: {
+        type: String,
+        required: true
+    },
+    create_date: {
+        type: Date,
+    },
+    status: {
         type: String,
     },
-    members: [{
-        member: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    }]
+    image_s: {
+        type: String,
+    },
+    members: [clubMember],
+    bookList: [clubBookListSchema]
 })
 
 module.exports = model('Club', clubSchema)

@@ -1,5 +1,4 @@
 import { Request, Response } from "express"
-import { rmSync } from "fs"
 const FavBook = require('../models/FavBook')
 
 const addFavobook = async ( req: Request, res: Response) => {
@@ -37,11 +36,17 @@ const addFavobook = async ( req: Request, res: Response) => {
         try{
             const result = await FavBook.create({
                 "userID": userID,
-                "favobooks":[{
-                    "bookID": bookID
-                }]
+                "favobooks":[]
             })
+
+            for( let i=0; i<bookID.length; i++){
+                await result.favobooks.push({bookID: bookID[i]})
+            }
+
+            await result.save()
+
             const returnFavoBooks = await FavBook.findOne({ userID: userID}).populate({path:'favobooks', populate: {path: 'bookID', select:'title authors pub_year'}}).exec()
+            
             res.status(201).json({"message": `New favourite book ${bookID} added!`, "favobooks": returnFavoBooks})
     
         } catch(err: any) {
