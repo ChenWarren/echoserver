@@ -97,10 +97,7 @@ const deleteFavoBook = async ( req: Request, res: Response) => {
                 const newFavoBooks = await favobookOwnerCheck.favobooks.find((book:any)=>book.bookID==bookID[i])
                 if(newFavoBooks){
                     await favobookOwnerCheck.favobooks.id(newFavoBooks._id).remove()
-                } else {
-                    return res.status(404).json({"message": `Books are not exist in favourite book list.`})
-                }
-                
+                } 
             }
 
             await favobookOwnerCheck.save()

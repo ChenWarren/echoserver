@@ -37,6 +37,12 @@ const clubSchema = new mongoose_1.Schema({
         type: String,
     },
     members: [clubMember],
-    bookList: [clubBookListSchema]
+    bookList: [clubBookListSchema],
+    member_count: {
+        type: Number,
+    },
+    book_count: {
+        type: Number,
+    }
 });
 module.exports = (0, mongoose_1.model)('Club', clubSchema);

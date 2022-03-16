@@ -11,7 +11,7 @@ const getAllBooks = async (req: Request, res: Response) => {
     }
     const books = await Book.find({},'title authors pub_year image_s').skip((page-1)*500).limit(500)
     if(!books) return res.status(204).json({"message": "No books found"})
-    res.json(books)
+    res.json({"books": books})
 }
 
 const getBook = async (req: Request, res: Response) => {
@@ -22,7 +22,7 @@ const getBook = async (req: Request, res: Response) => {
     if(!book) {
         return res.status(204).json({"message": `Book ID ${req.params.id} not found`})
     }
-    res.json(book)
+    res.json({"book":book})
 }
 
 module.exports = {

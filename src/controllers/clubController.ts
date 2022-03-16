@@ -2,7 +2,24 @@ import { Request, Response } from "express"
 const Club = require('../models/Club')
 const User = require('../models/User')
 
-const createClub =async (req:Request, res:Response) => {
+
+const getClubs = async (req: Request, res: Response) => {
+    let page: number = 1
+    if(!req?.params?.p){
+        page = 1
+    } else {
+        page = parseInt(req.params.p)
+    }
+
+    const clubs = await Club.find({}, "title status member_count book_count").skip((page-1)*500).limit(500)
+
+    if(!clubs) return res.status(204).json({"message":"No clubs found"})
+
+    res.json({"clubs": clubs})
+
+}
+
+const createClub = async (req:Request, res:Response) => {
     const { host, title, status, members, bookList } = req.body
     if(!host || !title || !bookList.length) return res.status(400).json({"message": "User, club title, and bookList are required."})
 
@@ -32,7 +49,10 @@ const createClub =async (req:Request, res:Response) => {
         for( let i=0; i<bookList.length; i++){
             await getClub.bookList.push({ bookID: bookList[i], like_count: 0})
         }
-        
+
+        getClub.member_count = members.length
+        getClub.book_count = bookList.length
+
         await getClub.save()
 
         const returnClub = await Club.findOne({title: title}).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email"}}).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year"}}).exec()
@@ -60,6 +80,7 @@ const addMembers = async (req: Request, res: Response) => {
 
     try {
         await getClub.members.push({memberID: getMemberID})
+        getClub.member_count = getClub.members.length
         await getClub.save()
 
         const returnClub = await Club.findOne({title: club}).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email"}}).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year"}}).exec()
@@ -72,6 +93,40 @@ const addMembers = async (req: Request, res: Response) => {
 
 }
 
+const deleteMembers = async (req: Request, res: Response) => {
+    const { club, user, members } = req.body
+
+    if(!club || !user || !members.length) return res.status(400).json({"message": "Club name and members are required"})
+
+    const getClub = await Club.findOne({ title: club}).exec()
+    if(!getClub) return res.status(404).json({"message": `Club ${club} is not exist!`})
+
+    const getUserID = await User.findOne({email: user}).exec()
+    if(!getUserID) return res.status(404).json({"message": "User is not exist"})
+
+    if(getClub.host != getUserID.id) return res.status(401).json({"message": "No authorization"})
+
+    try {
+
+        for( let i=0; i<members.length; i++){
+            if(members[i]!=user){
+                const member = await User.findOne({email: members[i]}).exec()
+                const findID = await getClub.members.find((m:any)=> m.memberID == member.id)
+                await getClub.members.id(findID).remove()
+            }
+        }
+
+        await getClub.save()
+
+        const returnClub = await Club.findOne({title: club}).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email"}}).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year"}}).exec()
+
+        res.status(201).json({"message": `Club ${getClub.title} member updated`, "club": returnClub} )
+
+    } catch (err: any) {
+        res.status(500).json({"message": err.message})
+    }
+
+}
 
 
-module.exports = { createClub, addMembers }
+module.exports = { getClubs, createClub, addMembers, deleteMembers }

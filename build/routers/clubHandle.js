@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-const { createClub, addMembers } = require('../controllers/clubController');
+const { getClubs, createClub, addMembers, deleteMembers } = require('../controllers/clubController');
+router.get('/', getClubs);
 router.post('/create', createClub);
 router.post('/addmember', addMembers);
+router.delete('/delmember', deleteMembers);
 module.exports = router;

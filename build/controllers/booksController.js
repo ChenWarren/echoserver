@@ -22,7 +22,7 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const books = yield Book.find({}, 'title authors pub_year image_s').skip((page - 1) * 500).limit(500);
     if (!books)
         return res.status(204).json({ "message": "No books found" });
-    res.json(books);
+    res.json({ "books": books });
 });
 const getBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
@@ -34,7 +34,7 @@ const getBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!book) {
         return res.status(204).json({ "message": `Book ID ${req.params.id} not found` });
     }
-    res.json(book);
+    res.json({ "book": book });
 });
 module.exports = {
     getAllBooks,

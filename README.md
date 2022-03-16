@@ -1,27 +1,71 @@
-# echoserver
+# Echoserver description
 
-Server base Url	"http://echoserver-env.eba-bccqr6dt.us-east-1.elasticbeanstalk.com"
+## Server base Url
 
-# Route	Method	Description	body/params
+"http://echoserver-env.eba-bccqr6dt.us-east-1.elasticbeanstalk.com"
 
-"/":	GET.	Server test.	
+# Route Method Description body/params
 
-"/register":	POST.	Register new user. Body:	{ email, username, password, country, state" }
+## Server test
 
-"/update":	PUT. Update user info.	Body: { email, username, password, country, state}
+"/": GET.
 
-"/auth":	POST.	Authentication. Body:	{ email, password }
-			
-"/books/:p":	GET.	Get books by page, 500 for each page. Params: pagenumber
+## Register new user
 
-"/books/id/:id"	GET.	Get single book by book ID.	Params: bookID
-			
-"/favobook":	POST.	Get favourite book list of the user. Body	{user},(user: user's email)
+"/register": POST.  
+Body: { email, username, password, country, state" }
 
-"/favobook/add":	POST.	Add favourite book list.	Body: {user, bookID[...]}, (user: user's email)
+## Update user info
 
-"/favobook/delete":	DELETE.	Delete favourite books. Body:	{user, bookID[...]}, (user: user's email)
-			
-"/club/create":	POST.	Create a club. Body:	{ host, title, status, members[...], bookList[...]}, (host: user's email)
+"/update": PUT.
+Body: { email, username, password, country, state}
 
-"/club/addmember":	POST.	Add member to club. Body:	{ club, member }, (club: club title. member: user's email)
+## Authentication
+
+"/auth": POST.
+Body: { email, password }
+
+## Get books by page, 500 for each page
+
+"/books/:p": GET.  
+Params: pagenumber
+
+## Get single book by book ID
+
+"/books/id/:id" GET.  
+Params: bookID
+
+## Get favourite book list of the user
+
+"/favobook": POST.  
+Body: {user},(user: user's email)
+
+## Add favourite book list
+
+"/favobook/add": POST.  
+Body: {user, bookID[...]}, (user: user's email)
+
+## Delete favourite books
+
+"/favobook/delete": DELETE.  
+Body: {user, bookID[...]}, (user: user's email)
+
+## Get club list
+
+"/club": GET.
+Params: page number: /club/:p
+
+## Create a club
+
+"/club/create": POST.  
+Body: { host, title, status, members[...], bookList[...]}, (host: user's email)
+
+## Add member to club
+
+"/club/addmember": POST.  
+Body: { club, member }, (club: club title. member: user's email)
+
+## Delete member from club
+
+"/club/delmember": DELETE.
+Body: { club, user, members[...]}, (club: club name, user: host email, members: email array)

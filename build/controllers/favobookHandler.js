@@ -86,9 +86,6 @@ const deleteFavoBook = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 if (newFavoBooks) {
                     yield favobookOwnerCheck.favobooks.id(newFavoBooks._id).remove();
                 }
-                else {
-                    return res.status(404).json({ "message": `Books are not exist in favourite book list.` });
-                }
             }
             yield favobookOwnerCheck.save();
             const returnFavoBooks = yield FavBook.findOne({ userID: userID }).populate({ path: 'favobooks', populate: { path: 'bookID', select: 'title authors pub_year' } }).exec();

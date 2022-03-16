@@ -38,7 +38,13 @@ const clubSchema = new Schema({
         type: String,
     },
     members: [clubMember],
-    bookList: [clubBookListSchema]
+    bookList: [clubBookListSchema],
+    member_count: {
+        type: Number,
+    },
+    book_count: {
+        type: Number,
+    }
 })
 
 module.exports = model('Club', clubSchema)
