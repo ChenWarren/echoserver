@@ -14,6 +14,10 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    image_s: {
+        type: String,
+        default: 'default-user-image.jpg'
+    },
     gender: {
         type: String,
     },

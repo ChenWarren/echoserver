@@ -22,10 +22,11 @@ app.use('/', require('./routers/root'));
 app.use('/register', require('./routers/userRegister'));
 app.use('/auth', require('./routers/auth'));
 // app.use(verifyJWT)
+app.use('/upload', require('./routers/uploadFile'));
 app.use('/update', require('./routers/userUpdate'));
 app.use('/books', require('./routers/books'));
-app.use('/favobook', require('./routers/favobookHandle'));
-app.use('/club', require('./routers/clubHandle'));
+app.use('/favobook', require('./routers/favobook'));
+app.use('/club', require('./routers/club'));
 app.all('*', (req, res) => {
     res.status(404).send('404 Not Found');
 });

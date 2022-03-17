@@ -53,8 +53,8 @@ const createClub = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         getClub.member_count = members.length;
         getClub.book_count = bookList.length;
         yield getClub.save();
-        const returnClub = yield Club.findOne({ title: title }).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email" } }).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year" } }).exec();
-        res.status(201).json({ "message": `Club ${title} created!`, "club": returnClub });
+        const data = yield loadBookListAsResult(title);
+        res.status(201).json({ "message": `Club ${title} created!`, "club": data });
     }
     catch (err) {
         res.status(500).json({ "message": err.message });
@@ -76,8 +76,8 @@ const addMembers = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         yield getClub.members.push({ memberID: getMemberID });
         getClub.member_count = getClub.members.length;
         yield getClub.save();
-        const returnClub = yield Club.findOne({ title: club }).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email" } }).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year" } }).exec();
-        res.status(201).json({ "message": `User ${member} join the club ${getClub.title}`, "club": returnClub });
+        const data = yield loadBookListAsResult(club);
+        res.status(201).json({ "message": `User ${member} join the club ${getClub.title}`, "club": data });
     }
     catch (err) {
         res.status(500).json({ "message": err.message });
@@ -86,7 +86,7 @@ const addMembers = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 const deleteMembers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { club, user, members } = req.body;
     if (!club || !user || !members.length)
-        return res.status(400).json({ "message": "Club name and members are required" });
+        return res.status(400).json({ "message": "Club name, user, and members are required" });
     const getClub = yield Club.findOne({ title: club }).exec();
     if (!getClub)
         return res.status(404).json({ "message": `Club ${club} is not exist!` });
@@ -103,12 +103,73 @@ const deleteMembers = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 yield getClub.members.id(findID).remove();
             }
         }
+        getClub.member_count = getClub.members.length;
         yield getClub.save();
-        const returnClub = yield Club.findOne({ title: club }).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email" } }).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year" } }).exec();
-        res.status(201).json({ "message": `Club ${getClub.title} member updated`, "club": returnClub });
+        const data = yield loadBookListAsResult(club);
+        res.status(201).json({ "message": `Club ${getClub.title} member updated`, "club": data });
     }
     catch (err) {
         res.status(500).json({ "message": err.message });
     }
 });
-module.exports = { getClubs, createClub, addMembers, deleteMembers };
+const addClubBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { club, user, bookID } = req.body;
+    if (!club || !user || !bookID.length)
+        return res.status(400).json({ "message": "Club name, user, and book ID are required." });
+    const getClub = yield Club.findOne({ title: club }).exec();
+    if (!getClub)
+        return res.status(404).json({ "message": `Club ${club} is not exist!` });
+    const getUserID = yield User.findOne({ email: user }).exec();
+    if (!getUserID)
+        return res.status(404).json({ "message": "User is not exist" });
+    const checkUser = yield getClub.members.find((m) => m.memberID == getUserID.id);
+    if (!checkUser)
+        return res.status(401).json({ "message": "No authorization" });
+    try {
+        for (let i = 0; i < bookID.length; i++) {
+            const findBookID = yield getClub.bookList.find((b) => b.memberID == bookID[i]);
+            if (!findBookID) {
+                yield getClub.bookList.push({ bookID: bookID[i] });
+            }
+        }
+        getClub.book_count = getClub.bookList.length;
+        yield getClub.save();
+        const data = yield loadBookListAsResult(club);
+        res.status(201).json({ "message": `Club ${getClub.title} book list updated`, "club": data });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
+});
+const deleteClubBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { club, user, bookID } = req.body;
+    if (!club || !user || !bookID.length)
+        return res.status(400).json({ "message": "Club name, user, and book ID are required." });
+    const getClub = yield Club.findOne({ title: club }).exec();
+    if (!getClub)
+        return res.status(404).json({ "message": `Club ${club} is not exist!` });
+    const getUserID = yield User.findOne({ email: user }).exec();
+    if (!getUserID)
+        return res.status(404).json({ "message": "User is not exist" });
+    if (getClub.host != getUserID.id)
+        return res.status(401).json({ "message": "No authorization" });
+    try {
+        for (let i = 0; i < bookID.length; i++) {
+            const findBook = yield getClub.bookList.find((b) => b.bookID == bookID[i]);
+            if (findBook) {
+                yield getClub.bookList.id(findBook._id).remove();
+            }
+        }
+        yield getClub.save();
+        const data = yield loadBookListAsResult(club);
+        res.status(201).json({ "message": `Club ${getClub.title} book list updated`, "club": data });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
+});
+const loadBookListAsResult = (key) => __awaiter(void 0, void 0, void 0, function* () {
+    const returnData = yield Club.findOne({ title: key }).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email" } }).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year" } }).exec();
+    return returnData;
+});
+module.exports = { getClubs, createClub, addMembers, deleteMembers, addClubBooks, deleteClubBooks };

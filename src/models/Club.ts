@@ -36,6 +36,7 @@ const clubSchema = new Schema({
     },
     image_s: {
         type: String,
+        default: 'default-club-image.png'
     },
     members: [clubMember],
     bookList: [clubBookListSchema],

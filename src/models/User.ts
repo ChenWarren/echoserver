@@ -13,6 +13,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    image_s: {
+        type: String,
+        default: 'default-user-image.jpg'
+    },
     gender: {
         type: String,
     },

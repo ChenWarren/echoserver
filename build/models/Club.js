@@ -35,6 +35,7 @@ const clubSchema = new mongoose_1.Schema({
     },
     image_s: {
         type: String,
+        default: 'default-club-image.png'
     },
     members: [clubMember],
     bookList: [clubBookListSchema],

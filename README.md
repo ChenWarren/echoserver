@@ -69,3 +69,17 @@ Body: { club, member }, (club: club title. member: user's email)
 
 "/club/delmember": DELETE.
 Body: { club, user, members[...]}, (club: club name, user: host email, members: email array)
+
+## Add books to club book list
+
+"/club/addbooks": POST.
+Body: {club,user, bookID[...]}
+
+## Delete books from club book list
+
+"/club/dlebooks": DELETE.
+Body: {club,user, bookID[...]}
+
+## Upload files
+
+"/upload": POST.
