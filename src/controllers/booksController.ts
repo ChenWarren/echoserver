@@ -14,7 +14,7 @@ const getAllBooks = async (req: Request, res: Response) => {
     res.json({"books": books})
 }
 
-const getBook = async (req: Request, res: Response) => {
+const getOneBook = async (req: Request, res: Response) => {
     let bookID: string = ''
     if(!req?.params?.id) return res.status(400).json({"message": "Book ID required"})
     bookID = req.params.id
@@ -27,5 +27,5 @@ const getBook = async (req: Request, res: Response) => {
 
 module.exports = {
     getAllBooks,
-    getBook,
+    getOneBook,
 }

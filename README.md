@@ -83,3 +83,13 @@ Body: {club,user, bookID[...]}
 ## Upload files
 
 "/upload": POST.
+
+## Get book reviews
+
+"/review/:id" GET.
+Params: bookID
+
+## Add book review
+
+"/review/add" POST.
+Body: {bookID, user, review, rating}

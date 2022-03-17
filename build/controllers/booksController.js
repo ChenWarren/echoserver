@@ -24,7 +24,7 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(204).json({ "message": "No books found" });
     res.json({ "books": books });
 });
-const getBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getOneBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     let bookID = '';
     if (!((_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.id))
@@ -38,5 +38,5 @@ const getBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 module.exports = {
     getAllBooks,
-    getBook,
+    getOneBook,
 };

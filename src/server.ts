@@ -30,6 +30,7 @@ app.use('/auth', require('./routers/auth'))
 app.use('/upload', require('./routers/uploadFile'))
 app.use('/update', require('./routers/userUpdate'))
 app.use('/books', require('./routers/books'))
+app.use('/review', require('./routers/review'))
 app.use('/favobook', require('./routers/favobook'))
 app.use('/club', require('./routers/club'))
 

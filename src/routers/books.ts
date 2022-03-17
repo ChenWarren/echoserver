@@ -1,8 +1,8 @@
 import { Router } from "express"
-const { getAllBooks, getBook } = require('../controllers/booksController')
+const { getAllBooks, getOneBook } = require('../controllers/booksController')
 const router = Router()
 
 router.get('/:p', getAllBooks)
-router.get('/id/:id', getBook)
+router.get('/id/:id', getOneBook)
 
 module.exports = router

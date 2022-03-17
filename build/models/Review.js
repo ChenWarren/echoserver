@@ -13,10 +13,23 @@ const reviewSchema = new mongoose_1.Schema({
             rating: {
                 type: Number,
             },
-            owner: {
+            date: {
+                type: Date,
+            },
+            user: {
                 type: mongoose_1.Schema.Types.ObjectId,
                 ref: 'User'
             }
-        }]
+        }],
+    rv_count: {
+        type: Number
+    },
+    av_rating: {
+        type: Number,
+        default: 0
+    },
+    rt_count: {
+        type: Number
+    }
 });
 module.exports = (0, mongoose_1.model)('Review', reviewSchema);

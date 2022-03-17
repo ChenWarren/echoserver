@@ -12,11 +12,24 @@ const reviewSchema = new Schema({
         rating: {
             type: Number,
         },
-        owner: {
+        date: {
+            type: Date,
+        },
+        user: {
             type: Schema.Types.ObjectId,
             ref: 'User'
         }
-    }]
+    }],
+    rv_count: {
+        type: Number
+    },
+    av_rating: {
+        type: Number,
+        default: 0
+    },
+    rt_count: {
+        type: Number
+    }
 })
 
 module.exports = model('Review', reviewSchema)
