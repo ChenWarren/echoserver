@@ -31,8 +31,10 @@ const addReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { bookID, user, review, rating } = req.body;
     if (!bookID || !user || !review)
         return res.status(400).json({ "message": "Book ID, user, and review are required" });
+    const getUser = yield User.findOne({ email: user }).exec();
+    if (!getUser)
+        return res.status(400).json({ "message": "User not exist" });
     try {
-        const getUser = yield User.findOne({ email: user }).exec();
         const userID = getUser.id;
         const checkReviews = yield Review.findOne({ book: bookID }).exec();
         if (checkReviews) {
@@ -75,6 +77,60 @@ const addReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).json({ "message": err.message });
     }
 });
+const updateReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bookID, user, reviewID, review, rating } = req.body;
+    if (!bookID || !user || !reviewID)
+        return res.status(400).json({ "message": "Book ID, user, and review ID are required" });
+    try {
+        const getUser = yield User.findOne({ email: user }).exec();
+        const userID = getUser.id;
+        const bookReviews = yield Review.findOne({ book: bookID }).exec();
+        const result = yield bookReviews.reviews.id(reviewID);
+        if (!result)
+            return res.status(404).json({ "message": "Review not exist" });
+        if (result.user != userID)
+            return res.status(401).json({ "message": "Unauthorized" });
+        result.review = review;
+        result.rating = rating;
+        result.date = Date.now();
+        const calResult = yield getReviewsCountAndAverage(bookReviews);
+        bookReviews.rv_count = calResult.rvCount;
+        bookReviews.rt_count = calResult.rtCount;
+        bookReviews.av_rating = calResult.rtAverage;
+        yield bookReviews.save();
+        const data = yield Review.findOne({ book: bookID }).exec();
+        res.status(201).json({ "message": "Review updated", "result": data });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
+});
+const delReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bookID, user, reviewID } = req.body;
+    if (!bookID || !user || !reviewID)
+        return res.status(400).json({ "message": "Book ID, user are required" });
+    try {
+        const getUser = yield User.findOne({ email: user }).exec();
+        const userID = getUser.id;
+        const bookReviews = yield Review.findOne({ book: bookID }).exec();
+        const result = yield bookReviews.reviews.id(reviewID);
+        if (!result)
+            return res.status(404).json({ "message": "Review not exist" });
+        if (result.user != userID)
+            return res.status(401).json({ "message": "Unauthorized" });
+        result.remove();
+        const calResult = yield getReviewsCountAndAverage(bookReviews);
+        bookReviews.rv_count = calResult.rvCount;
+        bookReviews.rt_count = calResult.rtCount;
+        bookReviews.av_rating = calResult.rtAverage;
+        yield bookReviews.save();
+        const data = yield Review.findOne({ book: bookID }).exec();
+        res.status(201).json({ "message": "Review deleted", "result": data });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
+});
 const getReviewsCountAndAverage = (obj) => __awaiter(void 0, void 0, void 0, function* () {
     const reviewCount = obj.reviews.filter((rv) => (rv.review != null && rv.review != undefined && rv.review != ''));
     const ratingArray = obj.reviews.map((rt) => (rt.rating));
@@ -85,4 +141,4 @@ const getReviewsCountAndAverage = (obj) => __awaiter(void 0, void 0, void 0, fun
     const rtAverage = ratingAverage;
     return { rvCount, rtCount, rtAverage };
 });
-module.exports = { getReviews, addReview };
+module.exports = { getReviews, addReview, updateReview, delReview };

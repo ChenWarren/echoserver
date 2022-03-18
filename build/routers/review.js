@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-const { getReviews, addReview } = require('../controllers/reviewController');
+const { getReviews, addReview, updateReview, delReview } = require('../controllers/reviewController');
 router.get('/:id', getReviews);
 router.post('/add', addReview);
+router.put('/update', updateReview);
+router.delete('/delete', delReview);
 module.exports = router;
