@@ -33,7 +33,6 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
             "gender": gender,
             "age": age
         });
-        // console.log(result);
         res.status(201).json({ 'message': `New user ${username} created!` });
     }
     catch (err) {

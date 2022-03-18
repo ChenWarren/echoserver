@@ -25,9 +25,6 @@ const registerNewUser = async (req: Request, res: Response) => {
             "age": age
         })
 
-        // console.log(result);
-        
-
         res.status(201).json({'message': `New user ${username} created!`})
 
     } catch(err: any) {

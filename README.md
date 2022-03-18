@@ -50,6 +50,21 @@ Body: {user, bookID[...]}, (user: user's email)
 "/favobook/delete": DELETE.  
 Body: {user, bookID[...]}, (user: user's email)
 
+## Get read book of the user
+
+"/readbook": POST
+Body: {user}
+
+## Add read book
+
+"/readbook/add": POST
+Body: {user, bookID[...]}
+
+## Delete read book
+
+"/readbook/delete": DELETE
+Body: {user, bookID[...]}
+
 ## Get club list
 
 "/club": GET.
@@ -93,3 +108,13 @@ Params: bookID
 
 "/review/add" POST.
 Body: {bookID, user, review, rating}
+
+## Update book review
+
+"/review/update" POST
+Body: {bookID, user, reviewID, review, rating}
+
+## Delete book review
+
+"/review/delete" POST
+Body: {bookID, user, reviewID }

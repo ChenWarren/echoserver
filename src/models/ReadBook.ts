@@ -1,16 +1,18 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from "mongoose"
+
+const bookListSchema = new Schema({
+    bookID: {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+    } 
+})
 
 const readbookSchema = new Schema({
-    owner: {
+    userID: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    readbooks: [{
-        readbook: {
-            type: Schema.Types.ObjectId,
-            ref: 'Book'
-        }
-    }]    
+    readbooks: [ bookListSchema ]
 })
 
 module.exports = model('ReadBook', readbookSchema)

@@ -27,6 +27,7 @@ app.use('/update', require('./routers/userUpdate'));
 app.use('/books', require('./routers/books'));
 app.use('/review', require('./routers/review'));
 app.use('/favobook', require('./routers/favobook'));
+app.use('/readbook', require('./routers/readbook'));
 app.use('/club', require('./routers/club'));
 app.all('*', (req, res) => {
     res.status(404).send('404 Not Found');
