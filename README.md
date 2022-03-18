@@ -73,7 +73,7 @@ Params: page number: /club/:p
 ## Create a club
 
 "/club/create": POST.  
-Body: { host, title, status, members[...], bookList[...]}, (host: user's email)
+Body: { host, title, status, members[...], bookList[...]}, (host: user's JWT, members: emails)
 
 ## Add member to club
 
