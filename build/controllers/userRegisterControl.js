@@ -14,11 +14,11 @@ const bcrypt = require('bcrypt');
 const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, username, password, gender, age, country, state, user_id } = req.body;
     if (!email || !username || !password || !country || !state)
-        return res.status(400).json({ 'message': 'Account, username, password, country, and state are required.' });
+        return res.status(400).json({ 'message': 'email, username, password, country, and state are required.' });
     const accountCheck = yield User.findOne({ email: email }).exec();
     const usernameCheck = yield User.findOne({ username: username }).exec();
     if (accountCheck)
-        return res.status(409).json({ 'message': 'Account exist!' });
+        return res.status(409).json({ 'message': 'Email exist!' });
     if (usernameCheck)
         return res.status(409).json({ 'message': 'Username exist!' });
     try {
