@@ -23,7 +23,7 @@ const loginHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         return res.status(404).json({ "message": "User not found" });
     const match = yield bcrypt.compare(password, foundAccount.password);
     if (match) {
-        const accessTk = jwt.sign({ "user": foundAccount.email }, process.env.ACCESS_TOKEN_CODE, { expiresIn: '300s' });
+        const accessTk = jwt.sign({ "user": foundAccount.email }, process.env.ACCESS_TOKEN_CODE, { expiresIn: '1h' });
         const refreshTk = jwt.sign({ "user": foundAccount.email }, process.env.REFRESH_TOKEN_CODE, { expiresIn: '1d' });
         foundAccount.refreshToken = refreshTk;
         const result = yield foundAccount.save();
