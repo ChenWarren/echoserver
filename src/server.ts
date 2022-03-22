@@ -29,7 +29,7 @@ app.use('/auth', require('./routers/auth'))
 app.use('/refresh', require('./routers/refreshTK'))
 app.use('/logout', require('./routers/logout'))
 
-app.use(verifyJWT)
+// app.use(verifyJWT)
 app.use('/upload', require('./routers/uploadFile'))
 app.use('/update', require('./routers/userUpdate'))
 app.use('/books', require('./routers/books'))
