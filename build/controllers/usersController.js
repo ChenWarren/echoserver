@@ -44,14 +44,44 @@ const getOneUserAndDelete = (req, res) => __awaiter(void 0, void 0, void 0, func
     username = req.params.username;
     const user = yield User.findOneAndDelete({ username }).exec();
     if (!user) {
-        return res.status(204).json({ "message": `Username ${req.params.username} not found` });
+        return res.status(204).json({ message: `Username ${req.params.username} not found` });
     }
     res.json({
-        message: "The user deleted Successfull"
+        message: `The user ${req.params.username} deleted Successfully`
+    });
+});
+const getOneUserAndDeleteByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    let _id = '';
+    if (!((_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.id))
+        return res.status(400).json({ "message": "id required" });
+    _id = req.params.id;
+    const user = yield User.findByIdAndDelete({ _id }).exec();
+    if (!user) {
+        return res.status(204).json({ message: `id ${req.params.id} not found` });
+    }
+    res.json({
+        message: `The user ${req.params.id} deleted Successfully`
+    });
+});
+const getOneUserAndDeleteByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    let email = '';
+    if (!((_d = req === null || req === void 0 ? void 0 : req.params) === null || _d === void 0 ? void 0 : _d.email))
+        return res.status(400).json({ "message": "email required" });
+    email = req.params.email;
+    const user = yield User.findOneAndDelete({ email }).exec();
+    if (!user) {
+        return res.status(204).json({ message: `email ${req.params.email} not found` });
+    }
+    res.json({
+        message: `The user ${req.params.email} deleted Successfully`
     });
 });
 module.exports = {
     getAllUsers,
     getOneUser,
-    getOneUserAndDelete
+    getOneUserAndDelete,
+    getOneUserAndDeleteByID,
+    getOneUserAndDeleteByEmail
 };
