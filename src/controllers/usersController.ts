@@ -16,8 +16,8 @@ const getOneUser = async (req: Request, res: Response) => {
     username = req.params.username
     const user = await User.findOne({username},'email username  country state gender age').exec()
     if(!user) {
-        return res.status(204).json({"message": `Username ${req.params.username} not found`})
-    }
+         res.json({"message": `Username ${req.params.username} not found`})
+    }else{
     res.json({
         "user":user
     // "eamil":user.email,
@@ -26,7 +26,7 @@ const getOneUser = async (req: Request, res: Response) => {
     // "state":user.state,
     // "gender":user.gender,
     // "age":user.age,
-})
+})}
 }
 const getOneUserAndDelete = async (req: Request, res: Response) => {
     let username: string = ''
