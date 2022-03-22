@@ -19,10 +19,15 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     else {
         page = parseInt(req.params.p);
     }
-    const books = yield Book.find({}, 'title authors pub_year image_s').skip((page - 1) * 500).limit(500);
-    if (!books)
-        return res.status(204).json({ "message": "No books found" });
-    res.json({ "books": books });
+    try {
+        const books = yield Book.find({}, 'title authors pub_year image_s').skip((page - 1) * 500).limit(500);
+        if (!books)
+            return res.status(204).json({ "message": "No books found" });
+        res.json({ "books": books });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
 });
 const getOneBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
@@ -30,11 +35,16 @@ const getOneBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     if (!((_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.id))
         return res.status(400).json({ "message": "Book ID required" });
     bookID = req.params.id;
-    const book = yield Book.findById(bookID).exec();
-    if (!book) {
-        return res.status(204).json({ "message": `Book ID ${req.params.id} not found` });
+    try {
+        const book = yield Book.findById(bookID).exec();
+        if (!book) {
+            return res.status(204).json({ "message": `Book ID ${req.params.id} not found` });
+        }
+        res.json({ "book": book });
     }
-    res.json({ "book": book });
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
 });
 module.exports = {
     getAllBooks,

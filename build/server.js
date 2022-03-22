@@ -21,7 +21,7 @@ app.use(express.json());
 app.use('/', require('./routers/root'));
 app.use('/register', require('./routers/userRegister'));
 app.use('/auth', require('./routers/auth'));
-// app.use(verifyJWT)
+app.use(verifyJWT);
 app.use('/upload', require('./routers/uploadFile'));
 app.use('/update', require('./routers/userUpdate'));
 app.use('/books', require('./routers/books'));

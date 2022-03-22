@@ -26,14 +26,14 @@ const getClubs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json({ "clubs": clubs });
 });
 const createClub = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { host, title, status, members, bookList } = req.body;
-    if (!host || !title || !bookList.length)
+    const { user, title, status, members, bookList } = req.body;
+    if (!user || !title || !bookList.length)
         return res.status(400).json({ "message": "User, club title, and bookList are required." });
     const clubExistCheck = yield Club.findOne({ title: title }).exec();
     if (clubExistCheck)
         return res.status(409).json({ "message": "Clube exist!" });
     try {
-        const getUser = yield User.findOne({ email: host }).exec();
+        const getUser = yield User.findOne({ email: user }).exec();
         const result = yield Club.create({
             "host": getUser.id,
             "title": title,

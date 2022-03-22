@@ -5,12 +5,13 @@ const jwt = require('jsonwebtoken')
 
 const loginHandler = async (req: Request, res: Response) => {
     const { email, password } = req.body
-    if( !email || !password ) return res.status(400).json({"message":"Account, password are required."})
+    
+    if( !email || !password ) return res.status(400).json({"message":"Email, password are required."})
 
     const foundAccount = await User.findOne({
         email: email 
     }).exec()
-    if(!foundAccount) return res.status(401)
+    if(!foundAccount) return res.status(404).json({"message": "User not found"})
 
     const match = await bcrypt.compare(password, foundAccount.password)
     if(match){
@@ -30,7 +31,7 @@ const loginHandler = async (req: Request, res: Response) => {
         res.cookie('jwt', refreshTk, { httpOnly: true, sameSite: 'none', maxAge: 24*60*60*1000 })
         res.json({accessTk})
     } else {
-        res.sendStatus(401)
+        res.sendStatus(401).json({"message": "Unauthorized"})
     }
 }
 

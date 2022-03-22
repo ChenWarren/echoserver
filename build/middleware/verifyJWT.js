@@ -9,7 +9,7 @@ const verifyJWT = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_CODE, (err, decode) => {
         if (err)
             return res.sendStatus(403);
-        req.user = decode.user;
+        req.body.user = decode.user;
         next();
     });
 };

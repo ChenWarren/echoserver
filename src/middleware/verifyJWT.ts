@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 const jwt = require('jsonwebtoken')
 
-const verifyJWT = (req: any, res: Response, next: NextFunction) => {
+const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
     const authHeader: any = req.headers.authorization || req.headers.Authorization
     
     if(!authHeader?.startsWith("Bearer")) return res.sendStatus(401)
@@ -11,7 +11,7 @@ const verifyJWT = (req: any, res: Response, next: NextFunction) => {
         process.env.ACCESS_TOKEN_CODE,
         (err: any, decode: any) => {
             if(err) return res.sendStatus(403)
-            req.user = decode.user
+            req.body.user = decode.user
             next()
         }
     )

@@ -20,8 +20,8 @@ const getClubs = async (req: Request, res: Response) => {
 }
 
 const createClub = async (req:Request, res:Response) => {
-    const { host, title, status, members, bookList } = req.body
-    if(!host || !title || !bookList.length) return res.status(400).json({"message": "User, club title, and bookList are required."})
+    const { user, title, status, members, bookList } = req.body
+    if(!user || !title || !bookList.length) return res.status(400).json({"message": "User, club title, and bookList are required."})
 
     const clubExistCheck = await Club.findOne({title: title}).exec() 
 
@@ -29,7 +29,7 @@ const createClub = async (req:Request, res:Response) => {
 
     try{
 
-        const getUser = await User.findOne({email: host}).exec()
+        const getUser = await User.findOne({email: user}).exec()
 
         const result = await Club.create({
             "host": getUser.id,
