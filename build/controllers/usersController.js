@@ -36,7 +36,22 @@ const getOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         // "age":user.age,
     });
 });
+const getOneUserAndDelete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    let username = '';
+    if (!((_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.username))
+        return res.status(400).json({ "message": "Username required" });
+    username = req.params.username;
+    const user = yield User.findOneAndDelete({ username }).exec();
+    if (!user) {
+        return res.status(204).json({ "message": `Username ${req.params.username} not found` });
+    }
+    res.json({
+        message: "The user deleted Successfull"
+    });
+});
 module.exports = {
     getAllUsers,
     getOneUser,
+    getOneUserAndDelete
 };
