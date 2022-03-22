@@ -34,11 +34,11 @@ const getOneUserAndDelete = async (req: Request, res: Response) => {
     username = req.params.username
     const user = await User.findOneAndDelete({username} ).exec()
     if(!user) {
-        return res.status(204).json({message: `Username ${req.params.username} not found`})
-    }
+         res.json({message: `Username ${req.params.username} not found`})
+    }else{
     res.json({
         message: `The user ${req.params.username} deleted Successfully`
-})
+})}
 }
 const getOneUserAndDeleteByID = async (req: Request, res: Response) => {
     let _id: string = ''
@@ -46,11 +46,11 @@ const getOneUserAndDeleteByID = async (req: Request, res: Response) => {
     _id = req.params.id
     const user = await User.findByIdAndDelete({_id} ).exec()
     if(!user) {
-        return res.status(204).json({message: `id ${req.params.id} not found`})
-    }
+        res.json({message: `id ${req.params.id} not found`})
+    }else{
     res.json({
         message: `The user ${req.params.id} deleted Successfully`
-})
+})}
 }
 const getOneUserAndDeleteByEmail = async (req: Request, res: Response) => {
     let email: string = ''
@@ -59,11 +59,11 @@ const getOneUserAndDeleteByEmail = async (req: Request, res: Response) => {
     const user= await User.findOneAndDelete({email}).exec()
 
     if(!user) {
-        return res.status(204).json({message: `email ${req.params.email} not found`})
-    }
+        res.json({message: `email ${req.params.email} not found`})
+    }else{
     res.json({
         message: `The user ${req.params.email} deleted Successfully`
-})
+})}
 }
 
 module.exports = {

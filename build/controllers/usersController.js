@@ -44,11 +44,13 @@ const getOneUserAndDelete = (req, res) => __awaiter(void 0, void 0, void 0, func
     username = req.params.username;
     const user = yield User.findOneAndDelete({ username }).exec();
     if (!user) {
-        return res.status(204).json({ message: `Username ${req.params.username} not found` });
+        res.json({ message: `Username ${req.params.username} not found` });
     }
-    res.json({
-        message: `The user ${req.params.username} deleted Successfully`
-    });
+    else {
+        res.json({
+            message: `The user ${req.params.username} deleted Successfully`
+        });
+    }
 });
 const getOneUserAndDeleteByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
@@ -58,11 +60,13 @@ const getOneUserAndDeleteByID = (req, res) => __awaiter(void 0, void 0, void 0, 
     _id = req.params.id;
     const user = yield User.findByIdAndDelete({ _id }).exec();
     if (!user) {
-        return res.status(204).json({ message: `id ${req.params.id} not found` });
+        res.json({ message: `id ${req.params.id} not found` });
     }
-    res.json({
-        message: `The user ${req.params.id} deleted Successfully`
-    });
+    else {
+        res.json({
+            message: `The user ${req.params.id} deleted Successfully`
+        });
+    }
 });
 const getOneUserAndDeleteByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _d;
@@ -72,11 +76,13 @@ const getOneUserAndDeleteByEmail = (req, res) => __awaiter(void 0, void 0, void 
     email = req.params.email;
     const user = yield User.findOneAndDelete({ email }).exec();
     if (!user) {
-        return res.status(204).json({ message: `email ${req.params.email} not found` });
+        res.json({ message: `email ${req.params.email} not found` });
     }
-    res.json({
-        message: `The user ${req.params.email} deleted Successfully`
-    });
+    else {
+        res.json({
+            message: `The user ${req.params.email} deleted Successfully`
+        });
+    }
 });
 module.exports = {
     getAllUsers,
