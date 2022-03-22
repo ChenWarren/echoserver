@@ -24,17 +24,19 @@ const getOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     username = req.params.username;
     const user = yield User.findOne({ username }, 'email username  country state gender age').exec();
     if (!user) {
-        return res.status(204).json({ "message": `Username ${req.params.username} not found` });
+        res.json({ "message": `Username ${req.params.username} not found` });
     }
-    res.json({
-        "user": user
-        // "eamil":user.email,
-        // "username":user.username,
-        // "country":user.country,
-        // "state":user.state,
-        // "gender":user.gender,
-        // "age":user.age,
-    });
+    else {
+        res.json({
+            "user": user
+            // "eamil":user.email,
+            // "username":user.username,
+            // "country":user.country,
+            // "state":user.state,
+            // "gender":user.gender,
+            // "age":user.age,
+        });
+    }
 });
 const getOneUserAndDelete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
