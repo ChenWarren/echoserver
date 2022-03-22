@@ -4,6 +4,7 @@ import { Request, Response } from "express"
 
 const getAllBooks = async (req: Request, res: Response) => {
     let page: number = 1
+    console.log(req.params.p)
     if(!req?.params?.p){
         page = 1
     } else {
@@ -33,7 +34,15 @@ const getOneBook = async (req: Request, res: Response) => {
     }
 }
 
+const searchBooks = async (req: Request, res: Response) => {
+    const key = req.query.key
+    const value = req.query.value
+    console.log(key, value)
+    res.json({"key": key, "value": value})
+}
+
 module.exports = {
     getAllBooks,
     getOneBook,
+    searchBooks,
 }

@@ -18,7 +18,7 @@ const loginHandler = async (req: Request, res: Response) => {
         const accessTk = jwt.sign(
             { "user": foundAccount.email },
             process.env.ACCESS_TOKEN_CODE,
-            { expiresIn: '300s'}
+            { expiresIn: '1h'}
         )
         const refreshTk = jwt.sign(
             { "user": foundAccount.email },
