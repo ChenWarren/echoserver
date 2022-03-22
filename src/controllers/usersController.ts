@@ -7,7 +7,6 @@ const getAllUsers = async (req: Request, res: Response) => {
     if(!Users) return res.status(204).json({"message": "No Users found"})
     res.json({"Users": Users})
     
-
 }
 
 const getOneUser = async (req: Request, res: Response) => {
@@ -28,8 +27,22 @@ const getOneUser = async (req: Request, res: Response) => {
     // "age":user.age,
 })
 }
+const getOneUserAndDelete = async (req: Request, res: Response) => {
+    let username: string = ''
+    if(!req?.params?.username) return res.status(400).json({"message": "Username required"})
+    username = req.params.username
+    const user = await User.findOneAndDelete({username}).exec()
+    if(!user) {
+        return res.status(204).json({"message": `Username ${req.params.username} not found`})
+    }
+    res.json({
+        message: "The user deleted Successfull"
+
+})
+}
 
 module.exports = {
     getAllUsers,
     getOneUser,
+    getOneUserAndDelete
 }
