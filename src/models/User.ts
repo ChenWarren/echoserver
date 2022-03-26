@@ -21,15 +21,13 @@ const userSchema = new Schema({
         type: String,
     },
     age: {
-        type: Number,
+        type: String,
     },
     country: {
         type: String,
-        required: true
     },
     state: {
         type: String,
-        required: true
     },
     user_id: {
         type: Number,
