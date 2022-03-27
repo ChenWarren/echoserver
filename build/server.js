@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3500;
 const mongoose = require('mongoose');
@@ -18,6 +19,7 @@ app.use(logger);
 app.use(cors(corsOptions));
 app.use(express.json());
 // routes
+app.use('/static', express.static(path.join(__dirname, 'uploads')));
 app.use('/', require('./routers/root'));
 app.use('/register', require('./routers/userRegister'));
 app.use('/auth', require('./routers/auth'));
