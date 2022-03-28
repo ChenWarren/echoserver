@@ -13,11 +13,12 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const userDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = req.body;
+    console.log(user);
     try {
         const getUser = yield User.findOne({ email: user }, "email username image_s country state gender age").exec();
         if (!getUser)
             res.status(204).json({ "message": "User not found" });
-        res.json({ "User": getUser });
+        res.json({ "user": getUser });
     }
     catch (err) {
         res.status(500).json({ "message": err.message });

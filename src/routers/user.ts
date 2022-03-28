@@ -3,6 +3,6 @@ const router = Router()
 const { userInfoUpdate, userDetail } = require('../controllers/userController')
 
 router.put('/update', userInfoUpdate)
-router.post('/detail', userDetail)
+router.get('/detail', userDetail)
 
 module.exports = router
