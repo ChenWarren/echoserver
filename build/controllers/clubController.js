@@ -20,10 +20,27 @@ const getClubs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     else {
         page = parseInt(req.params.p);
     }
-    const clubs = yield Club.find({}, "title status member_count book_count").skip((page - 1) * 500).limit(500);
+    const clubs = yield Club.find({}, "title host status member_count book_count create_date image_s").populate({ path: "host", select: "username" }).skip((page - 1) * 500).limit(500);
     if (!clubs)
         return res.status(204).json({ "message": "No clubs found" });
     res.json({ "clubs": clubs });
+});
+const getOneClub = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    let clubID = '';
+    if (!((_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.id))
+        return res.status(400).json({ "message": "Club ID required" });
+    clubID = String(req.query.id);
+    try {
+        const club = yield Club.findById(clubID).populate({ path: "host", select: "username" }).populate({ path: "bookList", populate: { path: "bookID", select: "bookID title authors" } }).populate({ path: "members", populate: { path: "memberID", select: "username image_s email" } }).exec();
+        if (!club) {
+            return res.status(204).json({ "message": `Club ID ${req.params.id} not found` });
+        }
+        res.json({ "club": club });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
 });
 const createClub = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user, title, status, members, bookList } = req.body;
@@ -172,4 +189,4 @@ const loadBookListAsResult = (key) => __awaiter(void 0, void 0, void 0, function
     const returnData = yield Club.findOne({ title: key }).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email" } }).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year" } }).exec();
     return returnData;
 });
-module.exports = { getClubs, createClub, addMembers, deleteMembers, addClubBooks, deleteClubBooks };
+module.exports = { getClubs, getOneClub, createClub, addMembers, deleteMembers, addClubBooks, deleteClubBooks };

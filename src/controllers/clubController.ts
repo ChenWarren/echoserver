@@ -11,12 +11,28 @@ const getClubs = async (req: Request, res: Response) => {
         page = parseInt(req.params.p)
     }
 
-    const clubs = await Club.find({}, "title status member_count book_count").skip((page-1)*500).limit(500)
+    const clubs = await Club.find({}, "title host status member_count book_count create_date image_s").populate({path:"host", select: "username"}).skip((page-1)*500).limit(500)
 
     if(!clubs) return res.status(204).json({"message":"No clubs found"})
 
     res.json({"clubs": clubs})
 
+}
+
+const getOneClub = async (req: Request, res: Response) => {
+    let clubID: string = ''
+    if(!req?.query?.id) return res.status(400).json({"message": "Club ID required"})
+    clubID = String(req.query.id) 
+    try {
+        const club = await Club.findById(clubID).populate({path: "host", select: "username"}).populate({path: "bookList", populate:{path:"bookID", select:"bookID title authors"}}).populate({path:"members", populate:{path:"memberID", select: "username image_s email"}}).exec()
+        if(!club) {
+            return res.status(204).json({"message": `Club ID ${req.params.id} not found`})
+        }
+        res.json({"club":club})
+    } catch (err: any) {
+        res.status(500).json({"message": err.message})
+    }
+    
 }
 
 const createClub = async (req:Request, res:Response) => {
@@ -199,4 +215,4 @@ const loadBookListAsResult = async (key: string) => {
     return returnData
 }
 
-module.exports = { getClubs, createClub, addMembers, deleteMembers, addClubBooks, deleteClubBooks }
+module.exports = { getClubs, getOneClub, createClub, addMembers, deleteMembers, addClubBooks, deleteClubBooks }

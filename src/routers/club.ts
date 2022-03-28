@@ -1,7 +1,8 @@
 import { Router } from "express"
 const router = Router()
 const { 
-    getClubs, 
+    getClubs,
+    getOneClub, 
     createClub, 
     addMembers,
     deleteMembers,
@@ -11,6 +12,7 @@ const {
 
 
 router.get('/', getClubs)
+router.get('/id', getOneClub)
 router.post('/create', createClub)
 router.post('/addmember', addMembers)
 router.delete('/delmember', deleteMembers)
