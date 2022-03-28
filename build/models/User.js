@@ -26,11 +26,9 @@ const userSchema = new mongoose_1.Schema({
     },
     country: {
         type: String,
-        required: true
     },
     state: {
         type: String,
-        required: true
     },
     user_id: {
         type: Number,
