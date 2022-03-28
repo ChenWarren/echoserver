@@ -28,6 +28,19 @@ const getOneUser = async (req: Request, res: Response) => {
     // "age":user.age,
 })}
 }
+const getOneUserByEmail = async (req: Request, res: Response) => {
+    let email: string = ''
+    if(!req?.params?.email) return res.status(400).json({"message": "email required"})
+    email = req.params.email
+    const user= await User.findOne({email},'email username  country state gender age').exec()
+
+    if(!user) {
+        res.json({message: `email ${req.params.email} not found`})
+    }else{
+    res.json({
+        "user":user
+})}
+}
 const getOneUserAndDelete = async (req: Request, res: Response) => {
     let username: string = ''
     if(!req?.params?.username) return res.status(400).json({"message": "Username required"})
@@ -71,6 +84,7 @@ module.exports = {
     getOneUser,
     getOneUserAndDelete,
     getOneUserAndDeleteByID,
-    getOneUserAndDeleteByEmail
+    getOneUserAndDeleteByEmail,
+    getOneUserByEmail
 
 }

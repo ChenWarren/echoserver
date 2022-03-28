@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const { getAllUsers, getOneUser, getOneUserAndDelete, getOneUserAndDeleteByID, getOneUserAndDeleteByEmail } = require('../controllers/adminUsersController');
+const { getAllUsers, getOneUser, getOneUserAndDelete, getOneUserAndDeleteByID, getOneUserAndDeleteByEmail, getOneUserByEmail } = require('../controllers/adminUsersController');
 const router = (0, express_1.Router)();
 router.get('/', getAllUsers);
 router.get('/findUserByUserName/:username', getOneUser);
 router.post('/userDeleteByUsername/:username', getOneUserAndDelete);
 router.post('/userDeleteById/:id', getOneUserAndDeleteByID);
 router.post('/userDeleteByEmail/:email', getOneUserAndDeleteByEmail);
+router.get('/finduserByEmail/:email', getOneUserByEmail);
 module.exports = router;

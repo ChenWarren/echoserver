@@ -38,10 +38,26 @@ const getOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
-const getOneUserAndDelete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getOneUserByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
+    let email = '';
+    if (!((_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.email))
+        return res.status(400).json({ "message": "email required" });
+    email = req.params.email;
+    const user = yield User.findOne({ email }, 'email username  country state gender age').exec();
+    if (!user) {
+        res.json({ message: `email ${req.params.email} not found` });
+    }
+    else {
+        res.json({
+            "user": user
+        });
+    }
+});
+const getOneUserAndDelete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
     let username = '';
-    if (!((_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.username))
+    if (!((_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.username))
         return res.status(400).json({ "message": "Username required" });
     username = req.params.username;
     const user = yield User.findOneAndDelete({ username }).exec();
@@ -55,9 +71,9 @@ const getOneUserAndDelete = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 const getOneUserAndDeleteByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c;
+    var _d;
     let _id = '';
-    if (!((_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.id))
+    if (!((_d = req === null || req === void 0 ? void 0 : req.params) === null || _d === void 0 ? void 0 : _d.id))
         return res.status(400).json({ "message": "id required" });
     _id = req.params.id;
     const user = yield User.findByIdAndDelete({ _id }).exec();
@@ -71,9 +87,9 @@ const getOneUserAndDeleteByID = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 const getOneUserAndDeleteByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d;
+    var _e;
     let email = '';
-    if (!((_d = req === null || req === void 0 ? void 0 : req.params) === null || _d === void 0 ? void 0 : _d.email))
+    if (!((_e = req === null || req === void 0 ? void 0 : req.params) === null || _e === void 0 ? void 0 : _e.email))
         return res.status(400).json({ "message": "email required" });
     email = req.params.email;
     const user = yield User.findOneAndDelete({ email }).exec();
@@ -91,5 +107,6 @@ module.exports = {
     getOneUser,
     getOneUserAndDelete,
     getOneUserAndDeleteByID,
-    getOneUserAndDeleteByEmail
+    getOneUserAndDeleteByEmail,
+    getOneUserByEmail
 };
