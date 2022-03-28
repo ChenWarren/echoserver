@@ -1,5 +1,5 @@
 import { Router } from "express"
-const { getAllUsers,getOneUser,getOneUserAndDelete,getOneUserAndDeleteByID,getOneUserAndDeleteByEmail } = require('../controllers/usersController')
+const { getAllUsers,getOneUser,getOneUserAndDelete,getOneUserAndDeleteByID,getOneUserAndDeleteByEmail } = require('../controllers/adminUsersController')
 const router = Router()
 
 router.get('/', getAllUsers)

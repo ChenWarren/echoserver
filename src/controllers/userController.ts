@@ -2,6 +2,21 @@ import { Request, Response } from "express"
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 
+const userDetail = async (req: Request, res: Response) => {
+    const { user } = req.body
+
+    try {
+        const getUser = await User.findOne({ email: user}, "email username image_s country state gender age").exec()
+        if(!getUser) res.status(204).json({"message": "User not found"})
+
+        res.json({"User": getUser})
+
+    } catch (err: any) {
+        res.status(500).json({"message": err.message})
+    }
+
+}
+
 const userInfoUpdate = async (req: Request, res: Response) => {
     const { email, username, password, gender, age, country, state, user_id } = req.body
 
@@ -24,4 +39,4 @@ const userInfoUpdate = async (req: Request, res: Response) => {
     }
 }
 
-module.exports = { userInfoUpdate }
+module.exports = { userInfoUpdate, userDetail }
