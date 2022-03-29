@@ -14,11 +14,11 @@ const User = require('../models/User');
 const getClubs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     let page = 1;
-    if (!((_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.p)) {
+    if (!((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.p)) {
         page = 1;
     }
     else {
-        page = parseInt(req.params.p);
+        page = parseInt(String(req.query.p));
     }
     const clubs = yield Club.find({}, "title host status member_count book_count create_date image_s").populate({ path: "host", select: "username" }).skip((page - 1) * 500).limit(500);
     if (!clubs)

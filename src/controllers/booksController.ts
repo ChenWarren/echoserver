@@ -7,7 +7,7 @@ const getAllBooks = async (req: Request, res: Response) => {
     if(!req?.query?.p){
         page = 1
     } else {
-        page = parseInt(req.params.p)
+        page = parseInt(String(req.query.p))
     }
     try{
         const books = await Book.find({},'title authors pub_year image_s').skip((page-1)*500).limit(500)
@@ -21,7 +21,7 @@ const getAllBooks = async (req: Request, res: Response) => {
 const getOneBook = async (req: Request, res: Response) => {
     let bookID: string = ''
     if(!req?.query?.id) return res.status(400).json({"message": "Book ID required"})
-    bookID = req.params.id
+    bookID = String(req.query.id)
     try {
         const book = await Book.findById(bookID).exec()
         if(!book) {

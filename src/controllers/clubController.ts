@@ -8,7 +8,7 @@ const getClubs = async (req: Request, res: Response) => {
     if(!req?.query?.p){
         page = 1
     } else {
-        page = parseInt(req.params.p)
+        page = parseInt(String(req.query.p))
     }
 
     const clubs = await Club.find({}, "title host status member_count book_count create_date image_s").populate({path:"host", select: "username"}).skip((page-1)*500).limit(500)

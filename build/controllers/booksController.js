@@ -17,7 +17,7 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         page = 1;
     }
     else {
-        page = parseInt(req.params.p);
+        page = parseInt(String(req.query.p));
     }
     try {
         const books = yield Book.find({}, 'title authors pub_year image_s').skip((page - 1) * 500).limit(500);
@@ -32,9 +32,9 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const getOneBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     let bookID = '';
-    if (!((_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.id))
+    if (!((_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.id))
         return res.status(400).json({ "message": "Book ID required" });
-    bookID = req.params.id;
+    bookID = String(req.query.id);
     try {
         const book = yield Book.findById(bookID).exec();
         if (!book) {
