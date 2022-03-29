@@ -12,6 +12,8 @@ const conn = require('./config/dbConn')
 const {logger} = require('./middleware/logEvents')
 const errorHandler = require('./middleware/errorHandler')
 const verifyJWT = require('./middleware/verifyJWT')
+const cookieParser = require('cookie-parser')
+const credentials = require('./middleware/credentials')
 
 // conn to db
 conn()
@@ -19,10 +21,13 @@ conn()
 // request log
 app.use(logger)
 
+app.use(credentials)
 app.use(cors(corsOptions))
+app.use(express.urlencoded({extended: false}))
 
 app.use(express.json())
 
+app.use(cookieParser())
 
 // routes
 app.use('/static', express.static(path.join(__dirname, 'uploads')))

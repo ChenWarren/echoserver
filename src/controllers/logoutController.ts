@@ -17,7 +17,7 @@ const logoutHandler = async ( req: Request, res: Response) => {
         const result = await findUser.save()
 
         res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: true })
-            return res.status(204).json({"message": "Logout"})
+        return res.status(204).json({"message": "Logout"})
 
     }catch(err: any){
         res.status(500).json({"message": err.message})

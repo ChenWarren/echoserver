@@ -13,6 +13,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const tokenHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const cookies = req.cookies;
+    console.log(cookies);
     if (!(cookies === null || cookies === void 0 ? void 0 : cookies.jwt))
         return res.status(401).json({ "message": "Unauthorized" });
     const refreshTK = cookies.jwt;

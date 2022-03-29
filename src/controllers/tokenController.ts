@@ -4,8 +4,10 @@ const jwt = require('jsonwebtoken')
 
 const tokenHandler = async ( req: Request, res: Response) => {
     const cookies = req.cookies;
+    console.log(cookies)
     if(!cookies?.jwt) return res.status(401).json({"message": "Unauthorized"})
     const refreshTK = cookies.jwt
+
     
     try{
         const findUser = await User.findOne({refreshToken: refreshTK}).exec()
