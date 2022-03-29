@@ -5,7 +5,7 @@ const User = require('../models/User')
 
 const getClubs = async (req: Request, res: Response) => {
     let page: number = 1
-    if(!req?.params?.p){
+    if(!req?.query?.p){
         page = 1
     } else {
         page = parseInt(req.params.p)

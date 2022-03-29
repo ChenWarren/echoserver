@@ -13,7 +13,7 @@ const Book = require('../models/Book');
 const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     let page = 1;
-    if (!((_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.p)) {
+    if (!((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.p)) {
         page = 1;
     }
     else {
