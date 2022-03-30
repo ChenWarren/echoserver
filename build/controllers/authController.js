@@ -28,7 +28,7 @@ const loginHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         foundAccount.refreshToken = refreshTk;
         const result = yield foundAccount.save();
         res.cookie('jwt', refreshTk, { httpOnly: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });
-        res.json({ accessTk });
+        res.json({ accessTk, "username": foundAccount.username });
     }
     else {
         res.sendStatus(401).json({ "message": "Unauthorized" });
