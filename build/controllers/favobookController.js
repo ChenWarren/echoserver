@@ -30,7 +30,7 @@ const addFavobook = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 if (err)
                     res.status(500).json({ "message": err.message });
                 const returnFavoBooks = yield FavBook.findOne({ userID: userID }).populate({ path: 'favobooks', populate: { path: 'bookID', select: 'title authors pub_year' } }).exec();
-                res.status(200).json({ "message": "Favourite book added.", "favobooks": returnFavoBooks });
+                res.status(201).json({ "message": "Favourite book added.", "favobooks": returnFavoBooks });
             }));
         }
         catch (err) {

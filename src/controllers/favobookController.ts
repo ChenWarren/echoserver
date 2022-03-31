@@ -27,7 +27,7 @@ const addFavobook = async ( req: Request, res: Response) => {
 
                 const returnFavoBooks = await FavBook.findOne({ userID: userID}).populate({path:'favobooks', populate: {path: 'bookID', select:'title authors pub_year'}}).exec()
 
-                res.status(200).json({"message": "Favourite book added.", "favobooks":returnFavoBooks})
+                res.status(201).json({"message": "Favourite book added.", "favobooks":returnFavoBooks})
             })
             
         } catch (err: any){

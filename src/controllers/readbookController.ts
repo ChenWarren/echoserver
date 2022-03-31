@@ -58,6 +58,31 @@ const addReadbook = async ( req: Request, res: Response) => {
 
 }
 
+const updateReadBooks = async (req: Request, res: Response) => {
+    const { user, bookID } = req.body
+    if(!user ) return res.status(400).json({'message': 'User is required.'})
+
+    const getUser = await User.findOne({ email: user}).exec()
+    const userID = getUser.id
+
+    try{
+        const getList = await ReadBook.findOne({userID: userID}).exec() 
+        getList.readbooks = []
+
+        for( let i=0; i<bookID.length; i++){
+            await getList.readbooks.push({bookID: bookID[i]})
+        }
+
+        await getList.save()
+
+        res.status(201).json({"message": `Read book updated!`, "readbooks": getList})
+
+    }catch(err:any){
+        res.status(500).json({"message": err.message})
+    }
+
+}
+
 const getReadBooks = async ( req: Request, res: Response) => {
     const { user } = req.body
     if(!user) return res.status(400).json({'message': 'User ID is required.'})
@@ -117,4 +142,4 @@ const deleteReadBook = async ( req: Request, res: Response) => {
 }
 
 
-module.exports = { addReadbook, getReadBooks, deleteReadBook}
+module.exports = { addReadbook, updateReadBooks, getReadBooks, deleteReadBook}

@@ -55,6 +55,25 @@ const addReadbook = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
+const updateReadBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { user, bookID } = req.body;
+    if (!user)
+        return res.status(400).json({ 'message': 'User is required.' });
+    const getUser = yield User.findOne({ email: user }).exec();
+    const userID = getUser.id;
+    try {
+        const getList = yield ReadBook.findOne({ userID: userID }).exec();
+        getList.readbooks = [];
+        for (let i = 0; i < bookID.length; i++) {
+            yield getList.readbooks.push({ bookID: bookID[i] });
+        }
+        yield getList.save();
+        res.status(201).json({ "message": `Read book updated!`, "readbooks": getList });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
+});
 const getReadBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = req.body;
     if (!user)
@@ -99,4 +118,4 @@ const deleteReadBook = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(404).json({ "message": `${userID} don't have a read book list.` });
     }
 });
-module.exports = { addReadbook, getReadBooks, deleteReadBook };
+module.exports = { addReadbook, updateReadBooks, getReadBooks, deleteReadBook };
