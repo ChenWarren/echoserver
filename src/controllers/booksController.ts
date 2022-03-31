@@ -49,7 +49,7 @@ const searchBooks = async (req: any, res: Response) => {
         if(result.length!=0){
             res.json({"books": result})
         }else{
-            res.json({"books": "The end or no result"})
+            res.json({"books": []})
         }
 
     }catch(err:any){

@@ -60,7 +60,7 @@ const searchBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.json({ "books": result });
         }
         else {
-            res.json({ "books": "The end or no result" });
+            res.json({ "books": [] });
         }
     }
     catch (err) {
