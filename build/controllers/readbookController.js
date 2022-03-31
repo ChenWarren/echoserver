@@ -68,7 +68,7 @@ const updateReadBooks = (req, res) => __awaiter(void 0, void 0, void 0, function
             yield getList.readbooks.push({ bookID: bookID[i] });
         }
         yield getList.save();
-        res.status(201).json({ "message": `Read book updated!`, "readbooks": getList });
+        res.status(201).json({ "message": `Read book updated!` });
     }
     catch (err) {
         res.status(500).json({ "message": err.message });

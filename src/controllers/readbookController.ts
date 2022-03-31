@@ -75,7 +75,7 @@ const updateReadBooks = async (req: Request, res: Response) => {
 
         await getList.save()
 
-        res.status(201).json({"message": `Read book updated!`, "readbooks": getList})
+        res.status(201).json({"message": `Read book updated!`})
 
     }catch(err:any){
         res.status(500).json({"message": err.message})

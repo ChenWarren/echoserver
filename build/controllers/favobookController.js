@@ -55,6 +55,25 @@ const addFavobook = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
+const updateFavoBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { user, bookID } = req.body;
+    if (!user)
+        return res.status(400).json({ 'message': 'User is required.' });
+    const getUser = yield User.findOne({ email: user }).exec();
+    const userID = getUser.id;
+    try {
+        const getList = yield FavBook.findOne({ userID: userID }).exec();
+        getList.favobooks = [];
+        for (let i = 0; i < bookID.length; i++) {
+            yield getList.favobooks.push({ bookID: bookID[i] });
+        }
+        yield getList.save();
+        res.status(201).json({ "message": `Favo book updated!` });
+    }
+    catch (err) {
+        res.status(500).json({ "message": err.message });
+    }
+});
 const getFavoBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = req.body;
     if (!user)
@@ -99,4 +118,4 @@ const deleteFavoBook = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(404).json({ "message": `${userID} don't have a favourite book list.` });
     }
 });
-module.exports = { addFavobook, getFavoBooks, deleteFavoBook };
+module.exports = { addFavobook, updateFavoBooks, getFavoBooks, deleteFavoBook };

@@ -58,6 +58,31 @@ const addFavobook = async ( req: Request, res: Response) => {
 
 }
 
+const updateFavoBooks = async (req: Request, res: Response) => {
+    const { user, bookID } = req.body
+    if(!user ) return res.status(400).json({'message': 'User is required.'})
+
+    const getUser = await User.findOne({ email: user}).exec()
+    const userID = getUser.id
+
+    try{
+        const getList = await FavBook.findOne({userID: userID}).exec() 
+        getList.favobooks = []
+
+        for( let i=0; i<bookID.length; i++){
+            await getList.favobooks.push({bookID: bookID[i]})
+        }
+
+        await getList.save()
+
+        res.status(201).json({"message": `Favo book updated!`})
+
+    }catch(err:any){
+        res.status(500).json({"message": err.message})
+    }
+
+}
+
 const getFavoBooks = async ( req: Request, res: Response) => {
     const { user } = req.body
     if(!user) return res.status(400).json({'message': 'User ID is required.'})
@@ -117,4 +142,4 @@ const deleteFavoBook = async ( req: Request, res: Response) => {
 }
 
 
-module.exports = { addFavobook, getFavoBooks, deleteFavoBook}
+module.exports = { addFavobook, updateFavoBooks, getFavoBooks, deleteFavoBook}
