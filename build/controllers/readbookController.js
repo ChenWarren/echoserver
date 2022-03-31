@@ -30,7 +30,7 @@ const addReadbook = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 if (err)
                     res.status(500).json({ "message": err.message });
                 const returnReadBooks = yield ReadBook.findOne({ userID: userID }).populate({ path: 'readbooks', populate: { path: 'bookID', select: 'title authors pub_year' } }).exec();
-                res.status(200).json({ "message": "Read book added.", "readbooks": returnReadBooks });
+                res.status(201).json({ "message": "Read book added.", "readbooks": returnReadBooks });
             }));
         }
         catch (err) {

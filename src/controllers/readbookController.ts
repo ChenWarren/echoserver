@@ -27,7 +27,7 @@ const addReadbook = async ( req: Request, res: Response) => {
 
                 const returnReadBooks = await ReadBook.findOne({ userID: userID}).populate({path:'readbooks', populate: {path: 'bookID', select:'title authors pub_year'}}).exec()
 
-                res.status(200).json({"message": "Read book added.", "readbooks":returnReadBooks})
+                res.status(201).json({"message": "Read book added.", "readbooks":returnReadBooks})
             })
             
         } catch (err: any){
