@@ -2,7 +2,6 @@
 
 ## Server base Url
 
-"http://echoserver-env.eba-bccqr6dt.us-east-1.elasticbeanstalk.com"
 
 # Route Method Description body/params
 
