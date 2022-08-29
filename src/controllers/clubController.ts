@@ -215,4 +215,12 @@ const loadBookListAsResult = async (key: string) => {
     return returnData
 }
 
-module.exports = { getClubs, getOneClub, createClub, addMembers, deleteMembers, addClubBooks, deleteClubBooks }
+module.exports = { 
+    getClubs, 
+    getOneClub, 
+    createClub, 
+    addMembers, 
+    deleteMembers, 
+    addClubBooks, 
+    deleteClubBooks 
+}
