@@ -189,4 +189,12 @@ const loadBookListAsResult = (key) => __awaiter(void 0, void 0, void 0, function
     const returnData = yield Club.findOne({ title: key }).populate("host", "username email").populate({ path: "members", populate: { path: "memberID", select: "username email" } }).populate({ path: "bookList", populate: { path: "bookID", select: "title authors pub_year" } }).exec();
     return returnData;
 });
-module.exports = { getClubs, getOneClub, createClub, addMembers, deleteMembers, addClubBooks, deleteClubBooks };
+module.exports = {
+    getClubs,
+    getOneClub,
+    createClub,
+    addMembers,
+    deleteMembers,
+    addClubBooks,
+    deleteClubBooks
+};
