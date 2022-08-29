@@ -2,7 +2,12 @@
 
 ## Server base Url
 
-"http://echoserver-env.eba-bccqr6dt.us-east-1.elasticbeanstalk.com"
+A reader social media web App that allows readers to share book reviews, reading
+lists, and do real time chatting.
+
+## Web App Link
+
+[Echo](https://echo-sage.vercel.app)
 
 # Route Method Description body/params
 
